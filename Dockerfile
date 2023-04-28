@@ -31,9 +31,9 @@ RUN apt update && apt install -y --no-install-recommends --allow-unauthenticated
 WORKDIR /slic3r
 ADD get_latest_prusaslicer_release.sh /slic3r
 
-RUN chmod +x /slic3r/get_latest_prusaslicer_release.sh \
-  && latestSlic3r=$(/slic3r/get_latest_prusaslicer_release.sh url) \
-  && slic3rReleaseName=$(/slic3r/get_latest_prusaslicer_release.sh name) \
+RUN chmod +x /slic3r/get_release_info.sh.sh \
+  && latestSlic3r=$(/slic3r/get_release_info.sh.sh url) \
+  && slic3rReleaseName=$(/slic3r/get_release_info.sh.sh name) \
   && curl -sSL ${latestSlic3r} > ${slic3rReleaseName} \
   && rm -f /slic3r/releaseInfo.json \
   && mkdir -p /slic3r/slic3r-dist \
@@ -52,10 +52,10 @@ RUN chmod +x /slic3r/get_latest_prusaslicer_release.sh \
   && mkdir -p /configs/.config/ \
   && ln -s /configs/.config/ /home/slic3r/ \
   && mkdir -p /home/slic3r/.config/ \
-  # We can now set the Download directory for Firefox and other browsers. 
+  # We can now set the Download directory for Firefox and other browsers.
   # We can also add /prints/ to the file explorer bookmarks for easy access.
   && echo "XDG_DOWNLOAD_DIR=\"/prints/\"" >> /home/slic3r/.config/user-dirs.dirs \
-  && echo "file:///prints prints" >> /home/slic3r/.gtk-bookmarks 
+  && echo "file:///prints prints" >> /home/slic3r/.gtk-bookmarks
 
 COPY --from=easy-novnc-build /bin/easy-novnc /usr/local/bin/
 COPY menu.xml /etc/xdg/openbox/
